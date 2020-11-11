@@ -1,21 +1,45 @@
 package jdbcdemo;
 
-import java.sql.*;
-
-class Driver {
-    public static void main(String[] args) throws Exception 
-    {
-
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "root", "1234");
-
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT  ID,Name,Population FROM world.city LIMIT 10;");
-        while (resultSet.next()) 
-        {
-
-            System.out.println(resultSet.getInt(1) + " " + resultSet.getString(2) + " " + resultSet.getInt(3));
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+ 
+public class Driver {
+ 
+    public static void main(String[] args) throws SQLException {
+ 
+        String url = "jdbc:mysql://localhost:3306/demo";
+        String user = "root";
+        String password = "1234";
+ 
+        Connection myConn = null;
+        Statement myStmt = null;
+ 
+        try {
+            // 1. Get a connection to database
+            myConn = DriverManager.getConnection(url, user, password);
+ 
+            // 2. Create a statement
+            myStmt = myConn.createStatement();
+ 
+            // 3. Execute SQL query
+            String sql = "insert into employees " + " (last_name, first_name, email)"
+                    + " values ('Brown', 'David', 'david.brown@foo.com')";
+ 
+            myStmt.executeUpdate(sql);
+ 
+            System.out.println("Insert complete.");
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally {
+            if (myStmt != null) {
+                myStmt.close();
+            }
+ 
+            if (myConn != null) {
+                myConn.close();
+            }
         }
-
     }
-
 }
