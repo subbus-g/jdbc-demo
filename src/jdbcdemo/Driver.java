@@ -24,15 +24,17 @@ public class Driver {
             myStmt = myConn.createStatement();
  
             // 3. Execute SQL query
-            String sql = "insert into employees " + " (last_name, first_name, email)"
-                    + " values ('Brown', 'David', 'david.brown@foo.com')";
+            String sql = "update employees set email='demo@gmail.com' where id=13";
  
-            myStmt.executeUpdate(sql);
+            int rowsAffected = myStmt.executeUpdate(sql);
  
-            System.out.println("Insert complete.");
-        } catch (Exception exc) {
+            System.out.println("Rows affected: " + rowsAffected);
+            System.out.println("Update complete.");
+        }
+        catch (Exception exc) {
             exc.printStackTrace();
-        } finally {
+        }
+        finally {
             if (myStmt != null) {
                 myStmt.close();
             }
